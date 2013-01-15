@@ -6,7 +6,6 @@ import cn.crawlite4j.spider.ISpider;
 
 public abstract class AbstractParser implements IParser {
 
-	@Override
 	public abstract void parseResponse(IRequest request, IResponse response,
 			ISpider spider);
 
