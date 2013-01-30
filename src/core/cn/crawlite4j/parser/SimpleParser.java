@@ -9,7 +9,7 @@ public class SimpleParser extends AbstractParser {
 	@Override
 	public void parseResponse(IRequest request, IResponse response,
 			ISpider spider) {
-		
+
 	}
 
 }

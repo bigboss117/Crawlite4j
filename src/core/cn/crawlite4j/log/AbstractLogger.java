@@ -3,104 +3,105 @@ package cn.crawlite4j.log;
 public abstract class AbstractLogger implements ILogger {
 
 	protected Level logLevel;
-	
-	//***********************************************************************//
-	//Constructor                                                            //
-	//***********************************************************************//
-	
+
+	// ***********************************************************************//
+	// Constructor
+	// ***********************************************************************//
+
 	protected AbstractLogger(Level level) {
-		this.logLevel = level;
+		setLevel(level);
 	}
-	
+
 	protected AbstractLogger() {
 		this(Level.DEBUG);
 	}
 
-	//***********************************************************************//
-	//abstract functions                                                     //
-	//***********************************************************************//
-	
+	// ***********************************************************************//
+	// abstract functions
+	// ***********************************************************************//
+
 	@Override
-	public abstract void log(String message, Level level);
-	
+	public abstract void log(Object message, Level level);
+
 	@Override
-	public abstract void log(Exception e, Level level);
-	
-	//***********************************************************************//
-	//implemented functions                                                  //
-	//***********************************************************************//
-	
+	public abstract void log(Object message, Throwable t, Level level);
+
+	// ***********************************************************************//
+	// implemented functions
+	// ***********************************************************************//
+
 	@Override
-	public void setLogLevel(Level level) {
-		this.logLevel = level;
+	public void setLevel(Level level) {
+		logLevel = level;
 	}
-	
+
 	@Override
-	public void fatal(String message) {
+	public Level getLevel() {
+		return logLevel;
+	}
+
+	@Override
+	public void fatal(Object message) {
 		log(message, Level.FATAL);
 	}
 
 	@Override
-	public void error(String message) {
+	public void error(Object message) {
 		log(message, Level.ERROR);
 	}
-	
+
 	@Override
-	public void warn(String message) {
+	public void warn(Object message) {
 		log(message, Level.WARN);
 	}
-	
+
 	@Override
-	public void info(String message) {
+	public void info(Object message) {
 		log(message, Level.INFO);
 	}
-	
+
 	@Override
-	public void debug(String message) {
+	public void debug(Object message) {
 		log(message, Level.DEBUG);
 	}
-	
+
 	@Override
-	public void trace(String message) {
+	public void trace(Object message) {
 		log(message, Level.TRACE);
 	}
-	
+
 	@Override
-	public void fatal(Exception e) {
-		log(e, Level.FATAL);
+	public void fatal(Object message, Throwable t) {
+		log(message, t, Level.FATAL);
 	}
 
 	@Override
-	public void error(Exception e) {
-		log(e, Level.ERROR);
+	public void error(Object message, Throwable t) {
+		log(message, t, Level.ERROR);
 	}
 
 	@Override
-	public void warn(Exception e) {
-		log(e, Level.WARN);
+	public void warn(Object message, Throwable t) {
+		log(message, t, Level.WARN);
 	}
 
 	@Override
-	public void info(Exception e) {
-		log(e, Level.INFO);
+	public void info(Object message, Throwable t) {
+		log(message, t, Level.INFO);
 	}
 
 	@Override
-	public void debug(Exception e) {
-		log(e, Level.DEBUG);
+	public void debug(Object message, Throwable t) {
+		log(message, t, Level.DEBUG);
 	}
 
 	@Override
-	public void trace(Exception e) {
-		log(e, Level.TRACE);
+	public void trace(Object message, Throwable t) {
+		log(message, t, Level.TRACE);
 	}
-	
-	//***********************************************************************//
-	//public functions                                                       //
-	//***********************************************************************//
-	
-	public Level getLogLevel() {
-		return logLevel;
-	}
-	
+
+	// ***********************************************************************//
+	// public functions
+	// ***********************************************************************//
+
 }

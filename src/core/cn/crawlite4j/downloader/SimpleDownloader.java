@@ -8,7 +8,7 @@ public class SimpleDownloader extends AbstractDownloader {
 
 	@Override
 	public IResponse downloadRequest(IRequest request, ISpider spider) {
-		
+
 		return null;
 	}
 

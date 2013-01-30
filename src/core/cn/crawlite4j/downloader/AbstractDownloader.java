@@ -6,7 +6,6 @@ import cn.crawlite4j.spider.ISpider;
 
 public abstract class AbstractDownloader implements IDownloader {
 
-	public abstract IResponse downloadRequest(IRequest request, 
-			ISpider spider);
+	public abstract IResponse downloadRequest(IRequest request, ISpider spider);
 
 }

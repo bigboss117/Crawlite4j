@@ -9,7 +9,7 @@ import cn.crawlite4j.pipeline.IPipeline;
 import cn.crawlite4j.request.IRequest;
 
 public abstract class AbstractRequest implements IRequest {
-	
+
 	private final String urlString;
 	private int downloadTimeout;
 	private static final TimeUnit downloadTimeoutTimeUnit = TimeUnit.MILLISECONDS;
@@ -17,52 +17,52 @@ public abstract class AbstractRequest implements IRequest {
 	private IDownloader downloader = null;
 	private IParser parser = null;
 	private IPipeline pipeline = null;
-	
-	//Constructor
+
+	// Constructor
 	public AbstractRequest(String url, int timeout) {
 		this.urlString = url;
 		this.downloadTimeout = timeout;
 	}
-	
+
 	public AbstractRequest(String url) {
 		this(url, 1000);
 	}
-	
-	//implemented
+
+	// implemented
 	@Override
 	public String getUrlString() {
 		return urlString;
 	}
-	
+
 	@Override
 	public int getDownloadTimeout() {
 		return downloadTimeout;
 	}
-	
+
 	@Override
 	public void setDownloadTimeout(int timeout) {
 		downloadTimeout = timeout;
 	}
-	
+
 	@Override
 	public TimeUnit getDownloadTimeoutTimeUnit() {
 		return downloadTimeoutTimeUnit;
 	}
-	
+
 	@Override
 	public boolean hasProperty(Object key) {
 		if (property == null)
 			return false;
 		return property.containsKey(key);
 	}
-	
+
 	@Override
 	public Object getProperty(Object key) {
 		if (property == null)
 			return null;
 		return property.get(key);
 	}
-	
+
 	@Override
 	public void setProperty(Object key, Object value) {
 		if (property == null)
@@ -105,5 +105,5 @@ public abstract class AbstractRequest implements IRequest {
 	public IPipeline getPipeline() {
 		return pipeline;
 	}
-	
+
 }
