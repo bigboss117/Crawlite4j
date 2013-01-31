@@ -11,6 +11,7 @@ import cn.crawlite4j.request.IRequest;
 public abstract class AbstractRequest implements IRequest {
 
 	private final String urlString;
+	private final boolean dontFilter;
 	private int downloadTimeout;
 	private static final TimeUnit downloadTimeoutTimeUnit = TimeUnit.MILLISECONDS;
 	private HashMap<Object, Object> property = null;
@@ -19,9 +20,14 @@ public abstract class AbstractRequest implements IRequest {
 	private IPipeline pipeline = null;
 
 	// Constructor
-	public AbstractRequest(String url, int timeout) {
+	public AbstractRequest(String url, int timeout, boolean dontFilter) {
 		this.urlString = url;
 		this.downloadTimeout = timeout;
+		this.dontFilter = dontFilter;
+	}
+
+	public AbstractRequest(String url, int timeout) {
+		this(url, 1000, false);
 	}
 
 	public AbstractRequest(String url) {
@@ -32,6 +38,11 @@ public abstract class AbstractRequest implements IRequest {
 	@Override
 	public String getUrlString() {
 		return urlString;
+	}
+
+	@Override
+	public boolean dontFilter() {
+		return dontFilter;
 	}
 
 	@Override

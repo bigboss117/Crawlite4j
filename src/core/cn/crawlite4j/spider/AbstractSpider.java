@@ -16,7 +16,6 @@ public abstract class AbstractSpider implements ISpider {
 	protected IDownloader defaultDownloader;
 	protected IParser defaultParser;
 	protected IPipeline defaultPipeline;
-	protected int threadNum;
 
 	// ***********************************************************************//
 	// Constructor
@@ -26,7 +25,7 @@ public abstract class AbstractSpider implements ISpider {
 			IParser parser, IPipeline pipeline, int threadNum, Level logLevel) {
 		if (logLevel != null)
 			logger.setLevel(logLevel);
-		this.threadNum = threadNum;
+
 		this.scheduler = scheduler;
 		defaultDownloader = downloader;
 		defaultParser = parser;
@@ -40,10 +39,6 @@ public abstract class AbstractSpider implements ISpider {
 	public abstract void addSeed(Object seed);
 
 	public abstract void startRequests();
-
-	public abstract void addRequest(IRequest request);
-
-	public abstract IRequest getRequest();
 
 	// ***********************************************************************//
 	// implemented functions
@@ -69,12 +64,26 @@ public abstract class AbstractSpider implements ISpider {
 		return defaultPipeline;
 	}
 
+	@Override
+	public void addRequest(IRequest request) {
+		addRequestToScheduler(request);
+	}
+
+	@Override
+	public IRequest getRequest() {
+		return scheduler.getRequest(this);
+	}
+
 	// ***********************************************************************//
 	// protected functions
 	// ***********************************************************************//
 
 	protected ILogger intiLogger() {
 		return new SimpleConsoleLogger();
+	}
+
+	protected void addRequestToScheduler(IRequest request) {
+		scheduler.addRequest(request, this);
 	}
 
 }

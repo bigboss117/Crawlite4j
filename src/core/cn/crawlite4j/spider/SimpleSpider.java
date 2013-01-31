@@ -10,7 +10,6 @@ import cn.crawlite4j.parser.IParser;
 import cn.crawlite4j.parser.SimpleParser;
 import cn.crawlite4j.pipeline.IPipeline;
 import cn.crawlite4j.pipeline.SimplePipeline;
-import cn.crawlite4j.request.IRequest;
 import cn.crawlite4j.request.SimpleRequest;
 import cn.crawlite4j.scheduler.IScheduler;
 import cn.crawlite4j.scheduler.FIFOScheduler;
@@ -35,18 +34,6 @@ public class SimpleSpider extends AbstractSpider {
 		for (Object seed : seeds) {
 			addRequest(new SimpleRequest((String) seed));
 		}
-	}
-
-	@Override
-	public void addRequest(IRequest request) {
-		logger.info("Add request : " + request.getUrlString());
-		scheduler.addRequest(request);
-	}
-
-	@Override
-	public IRequest getRequest() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public static void main(String[] args) {

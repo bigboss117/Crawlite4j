@@ -10,6 +10,8 @@ public interface IRequest {
 
 	public String getUrlString();
 
+	public boolean dontFilter();
+
 	public int getDownloadTimeout();
 
 	public void setDownloadTimeout(int timeout);

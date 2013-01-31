@@ -5,13 +5,13 @@ import java.util.LinkedList;
 import cn.crawlite4j.request.IRequest;
 import cn.crawlite4j.spider.ISpider;
 
-public class FIFOScheduler extends AbstractScheduler {
+public class LIFOSeheduler extends AbstractScheduler {
 
 	protected LinkedList<IRequest> list = new LinkedList<IRequest>();
 
 	@Override
 	public synchronized IRequest getRequest(ISpider spider) {
-		return list.pollFirst();
+		return list.pollLast();
 	}
 
 	@Override
