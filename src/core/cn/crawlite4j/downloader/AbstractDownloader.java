@@ -6,6 +6,19 @@ import cn.crawlite4j.spider.ISpider;
 
 public abstract class AbstractDownloader implements IDownloader {
 
-	public abstract IResponse downloadRequest(IRequest request, ISpider spider);
+	private ISpider spider;
+
+	@Override
+	public final void setSpider(ISpider spider) {
+		this.spider = spider;
+	}
+
+	@Override
+	public final ISpider getSpider() {
+		return spider;
+	}
+
+	@Override
+	public abstract IResponse downloadRequest(IRequest request);
 
 }

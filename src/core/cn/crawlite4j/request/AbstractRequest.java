@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 import cn.crawlite4j.downloader.IDownloader;
 import cn.crawlite4j.parser.IParser;
 import cn.crawlite4j.pipeline.IPipeline;
-import cn.crawlite4j.request.IRequest;
 
 public abstract class AbstractRequest implements IRequest {
 

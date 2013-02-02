@@ -21,6 +21,8 @@ public class SimpleConsoleLogger extends AbstractLogger {
 						level.toString(), message.toString()));
 			}
 			if (t != null) {
+				System.out.println(String.format(messageTemplate,
+						level.toString(), t.toString()));
 				for (StackTraceElement elemet : t.getStackTrace()) {
 					System.out.println(String.format(messageTemplate,
 							level.toString(), elemet.toString()));

@@ -4,20 +4,14 @@ import cn.crawlite4j.spider.ISpider;
 
 public abstract class AbstractEngine implements IEngine {
 
-	protected final ISpider spider;
-	protected int threadNum = 1;
+	private ISpider spider;
 
 	// ***********************************************************************//
 	// Constructor
 	// ***********************************************************************//
 
-	public AbstractEngine(int threadNum, ISpider spider) {
-		this.spider = spider;
-		setThreadNum(threadNum);
-	}
+	public AbstractEngine() {
 
-	public AbstractEngine(ISpider spider) {
-		this(1, spider);
 	}
 
 	// ***********************************************************************//
@@ -35,13 +29,13 @@ public abstract class AbstractEngine implements IEngine {
 	// ***********************************************************************//
 
 	@Override
-	public void setThreadNum(int num) {
-		threadNum = num;
+	public final void setSpider(ISpider spider) {
+		this.spider = spider;
 	}
 
 	@Override
-	public int getThreadNum() {
-		return threadNum;
+	public final ISpider getSpider() {
+		return spider;
 	}
 
 }

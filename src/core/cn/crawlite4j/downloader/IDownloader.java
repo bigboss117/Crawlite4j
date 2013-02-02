@@ -6,6 +6,10 @@ import cn.crawlite4j.spider.ISpider;
 
 public interface IDownloader {
 
-	public IResponse downloadRequest(IRequest request, ISpider spider);
+	public void setSpider(ISpider spider);
+
+	public ISpider getSpider();
+
+	public IResponse downloadRequest(IRequest request);
 
 }

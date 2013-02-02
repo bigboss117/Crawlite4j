@@ -1,10 +1,12 @@
 package cn.crawlite4j.engine;
 
+import cn.crawlite4j.spider.ISpider;
+
 public interface IEngine {
 
-	public void setThreadNum(int num);
+	public void setSpider(ISpider spider);
 
-	public int getThreadNum();
+	public ISpider getSpider();
 
 	public void start();
 

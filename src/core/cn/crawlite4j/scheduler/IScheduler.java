@@ -5,8 +5,12 @@ import cn.crawlite4j.spider.ISpider;
 
 public interface IScheduler {
 
-	public void addRequest(IRequest request, ISpider spider);
+	public void setSpider(ISpider spider);
 
-	public IRequest getRequest(ISpider spider);
+	public ISpider getSpider();
+
+	public void addRequest(IRequest request);
+
+	public IRequest getRequest();
 
 }

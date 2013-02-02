@@ -5,6 +5,8 @@ import cn.crawlite4j.spider.ISpider;
 
 public abstract class AbstractScheduler implements IScheduler {
 
+	private ISpider spider;
+
 	protected IRequestDuplFilter dupFilter = new AllFalseDuplFilter();
 
 	// ***********************************************************************//
@@ -23,22 +25,32 @@ public abstract class AbstractScheduler implements IScheduler {
 	// abstract functions
 	// ***********************************************************************//
 
-	public abstract IRequest getRequest(ISpider spider);
+	public abstract IRequest getRequest();
 
-	protected abstract void enqueueRequest(IRequest request, ISpider spider);
+	protected abstract void enqueueRequest(IRequest request);
 
 	// ***********************************************************************//
 	// implemented functions
 	// ***********************************************************************//
 
 	@Override
-	public void addRequest(IRequest request, ISpider spider) {
+	public void setSpider(ISpider spider) {
+		this.spider = spider;
+	}
+
+	@Override
+	public ISpider getSpider() {
+		return spider;
+	}
+
+	@Override
+	public void addRequest(IRequest request) {
 		boolean seen = dupFilter.requestSeen(request, spider);
 		if (seen && !request.dontFilter())
 			spider.getLogger().debug(
 					"Skipped (" + request.getUrlString() + ") already seen)");
 		else
-			enqueueRequest(request, spider);
+			enqueueRequest(request);
 	}
 
 	// ***********************************************************************//

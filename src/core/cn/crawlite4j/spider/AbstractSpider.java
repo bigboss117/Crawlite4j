@@ -1,9 +1,9 @@
 package cn.crawlite4j.spider;
 
 import cn.crawlite4j.downloader.IDownloader;
+import cn.crawlite4j.engine.IEngine;
 import cn.crawlite4j.log.ILogger;
 import cn.crawlite4j.log.Level;
-import cn.crawlite4j.log.SimpleConsoleLogger;
 import cn.crawlite4j.parser.IParser;
 import cn.crawlite4j.pipeline.IPipeline;
 import cn.crawlite4j.request.IRequest;
@@ -11,25 +11,20 @@ import cn.crawlite4j.scheduler.IScheduler;
 
 public abstract class AbstractSpider implements ISpider {
 
-	protected final ILogger logger = intiLogger();
+	protected ILogger logger;
 	protected IScheduler scheduler;
 	protected IDownloader defaultDownloader;
 	protected IParser defaultParser;
 	protected IPipeline defaultPipeline;
 
+	protected IEngine engine;
+
 	// ***********************************************************************//
 	// Constructor
 	// ***********************************************************************//
 
-	protected AbstractSpider(IScheduler scheduler, IDownloader downloader,
-			IParser parser, IPipeline pipeline, int threadNum, Level logLevel) {
-		if (logLevel != null)
-			logger.setLevel(logLevel);
+	protected AbstractSpider() {
 
-		this.scheduler = scheduler;
-		defaultDownloader = downloader;
-		defaultParser = parser;
-		defaultPipeline = pipeline;
 	}
 
 	// ***********************************************************************//
@@ -50,8 +45,40 @@ public abstract class AbstractSpider implements ISpider {
 	}
 
 	@Override
+	public void setLogger(ILogger logger) {
+		this.logger = logger;
+	}
+
+	@Override
+	public Level getLogLevel() {
+		return logger.getLevel();
+	}
+
+	@Override
+	public void setLogLevel(Level level) {
+		logger.setLevel(level);
+	}
+
+	@Override
+	public IScheduler getScheduler() {
+		return scheduler;
+	}
+
+	@Override
+	public void setScheduler(IScheduler scheduler) {
+		scheduler.setSpider(this);
+		this.scheduler = scheduler;
+	}
+
+	@Override
 	public IDownloader getDefaultDownloader() {
 		return defaultDownloader;
+	}
+
+	@Override
+	public void setDefaultDownloader(IDownloader downloader) {
+		downloader.setSpider(this);
+		defaultDownloader = downloader;
 	}
 
 	@Override
@@ -60,8 +87,48 @@ public abstract class AbstractSpider implements ISpider {
 	}
 
 	@Override
+	public void setDefaultParser(IParser parser) {
+		parser.setSpider(this);
+		defaultParser = parser;
+	}
+
+	@Override
 	public IPipeline getDefaultPipeline() {
 		return defaultPipeline;
+	}
+
+	@Override
+	public void setDefaultPipeline(IPipeline pipeline) {
+		pipeline.setSpider(this);
+		defaultPipeline = pipeline;
+	}
+
+	@Override
+	public void setEngine(IEngine engine) {
+		engine.setSpider(this);
+		this.engine = engine;
+	}
+
+	@Override
+	public final void runSpider() {
+		if (logger == null)
+			throw new NullPointerException("logger is null");
+		if (scheduler == null)
+			throw new NullPointerException("scheduler is null");
+		if (defaultDownloader == null)
+			throw new NullPointerException("defaultDownloader is null");
+		if (defaultParser == null)
+			throw new NullPointerException("defaultParser is null");
+		if (defaultPipeline == null)
+			throw new NullPointerException("defaultPipeline is null");
+		if (engine == null)
+			throw new NullPointerException("engine is null");
+		try {
+			startRequests();
+		} catch (Exception e) {
+			logger.error(null, e);
+		}
+		engine.start();
 	}
 
 	@Override
@@ -71,19 +138,15 @@ public abstract class AbstractSpider implements ISpider {
 
 	@Override
 	public IRequest getRequest() {
-		return scheduler.getRequest(this);
+		return scheduler.getRequest();
 	}
 
 	// ***********************************************************************//
 	// protected functions
 	// ***********************************************************************//
 
-	protected ILogger intiLogger() {
-		return new SimpleConsoleLogger();
-	}
-
 	protected void addRequestToScheduler(IRequest request) {
-		scheduler.addRequest(request, this);
+		scheduler.addRequest(request);
 	}
 
 }
