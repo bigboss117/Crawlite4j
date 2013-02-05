@@ -3,13 +3,13 @@ package cn.crawlite4j.common.url;
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.crawlite4j.crawler.AbstractCrawler;
-import cn.crawlite4j.crawler.ICrawler;
-import cn.crawlite4j.engine.SimpleMutilThreadEngine;
-import cn.crawlite4j.log.Level;
-import cn.crawlite4j.log.SimpleConsoleLogger;
-import cn.crawlite4j.pipeline.LoggerPipeline;
-import cn.crawlite4j.scheduler.FIFOScheduler;
+import cn.crawlite4j.core.crawler.AbstractCrawler;
+import cn.crawlite4j.core.crawler.ICrawler;
+import cn.crawlite4j.core.engine.SimpleMutilThreadEngine;
+import cn.crawlite4j.core.log.Level;
+import cn.crawlite4j.core.log.SimpleConsoleLogger;
+import cn.crawlite4j.core.pipeline.LoggerPipeline;
+import cn.crawlite4j.core.scheduler.FIFOScheduler;
 
 public class URLCrawler extends AbstractCrawler {
 

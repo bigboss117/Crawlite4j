@@ -1,6 +1,6 @@
 package cn.crawlite4j.common.url;
 
-import cn.crawlite4j.item.AbstractItem;
+import cn.crawlite4j.core.item.AbstractItem;
 
 public class URLItem extends AbstractItem {
 

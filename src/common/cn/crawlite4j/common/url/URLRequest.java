@@ -1,6 +1,6 @@
 package cn.crawlite4j.common.url;
 
-import cn.crawlite4j.request.AbstractRequest;
+import cn.crawlite4j.core.request.AbstractRequest;
 
 public class URLRequest extends AbstractRequest {
 

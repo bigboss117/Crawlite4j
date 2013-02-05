@@ -3,10 +3,10 @@ package cn.crawlite4j.common.url;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.crawlite4j.item.IItem;
-import cn.crawlite4j.parser.AbstractParser;
-import cn.crawlite4j.request.IRequest;
-import cn.crawlite4j.response.IResponse;
+import cn.crawlite4j.core.item.IItem;
+import cn.crawlite4j.core.parser.AbstractParser;
+import cn.crawlite4j.core.request.IRequest;
+import cn.crawlite4j.core.response.IResponse;
 
 public class URLParser extends AbstractParser {
 

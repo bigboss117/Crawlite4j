@@ -1,6 +1,6 @@
 package cn.crawlite4j.common.url;
 
-import cn.crawlite4j.response.AbstractResponse;
+import cn.crawlite4j.core.response.AbstractResponse;
 
 public class URLResponse extends AbstractResponse {
 

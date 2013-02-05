@@ -6,9 +6,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-import cn.crawlite4j.downloader.AbstractDownloader;
-import cn.crawlite4j.request.IRequest;
-import cn.crawlite4j.response.IResponse;
+import cn.crawlite4j.core.downloader.AbstractDownloader;
+import cn.crawlite4j.core.request.IRequest;
+import cn.crawlite4j.core.response.IResponse;
 
 public class URLDownloader extends AbstractDownloader {
 
