@@ -1,10 +1,12 @@
-package cn.crawlite4j.response;
+package cn.crawlite4j.common.url;
 
-public class SimpleResponse extends AbstractResponse {
+import cn.crawlite4j.response.AbstractResponse;
+
+public class URLResponse extends AbstractResponse {
 
 	private String content = null;
 
-	public SimpleResponse(String url) {
+	public URLResponse(String url) {
 		super(url);
 	}
 
