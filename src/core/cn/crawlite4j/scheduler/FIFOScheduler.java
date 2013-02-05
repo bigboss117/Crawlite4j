@@ -14,7 +14,7 @@ public class FIFOScheduler extends AbstractScheduler {
 	}
 
 	@Override
-	protected synchronized void enqueueRequest(IRequest request) {
+	public synchronized void addRequest(IRequest request) {
 		list.offerLast(request);
 	}
 

@@ -3,16 +3,16 @@ package cn.crawlite4j.response;
 public abstract class AbstractResponse implements IResponse {
 
 	private final String urlString;
-	private boolean successful;
+	private boolean failed;
 
 	// Constructor
-	public AbstractResponse(String url, boolean successful) {
+	public AbstractResponse(String url, boolean failed) {
 		this.urlString = url;
-		this.successful = successful;
+		this.failed = failed;
 	}
 
 	public AbstractResponse(String url) {
-		this(url, false);
+		this(url, true);
 	}
 
 	// implemented
@@ -22,18 +22,18 @@ public abstract class AbstractResponse implements IResponse {
 	}
 
 	@Override
-	public boolean isSuccessful() {
-		return successful;
+	public boolean isFailed() {
+		return failed;
 	}
 
 	@Override
-	public void setSuccessful(boolean successful) {
-		this.successful = successful;
+	public void setFailed(boolean failed) {
+		this.failed = failed;
 	}
 
 	@Override
-	public boolean getSuccessful() {
-		return successful;
+	public boolean getFailed() {
+		return failed;
 	}
 
 }

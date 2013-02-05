@@ -3,13 +3,21 @@ package cn.crawlite4j.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.crawlite4j.crawler.ICrawler;
 import cn.crawlite4j.downloader.IDownloader;
+import cn.crawlite4j.downloader.IDownloaderMiddleware;
 import cn.crawlite4j.item.IItem;
+import cn.crawlite4j.item.NewRequestItem;
 import cn.crawlite4j.parser.IParser;
+import cn.crawlite4j.parser.IParserMiddleware;
 import cn.crawlite4j.pipeline.IPipeline;
+import cn.crawlite4j.pipeline.IPipelineMiddleware;
 import cn.crawlite4j.request.IRequest;
+import cn.crawlite4j.request.IgnoreRequestException;
 import cn.crawlite4j.response.IResponse;
-import cn.crawlite4j.spider.ISpider;
+import cn.crawlite4j.response.IgnoreResponseException;
+import cn.crawlite4j.scheduler.IScheduler;
+import cn.crawlite4j.scheduler.ISchedulerMiddleware;
 
 public class SimpleMutilThreadEngine extends AbstractEngine {
 
@@ -46,7 +54,7 @@ public class SimpleMutilThreadEngine extends AbstractEngine {
 	public void stop() {
 		for (Thread thread : threads) {
 			thread.interrupt();
-			getSpider().getLogger().debug("Engine interrupt one thread.");
+			getLogger().debug("Engine interrupt one thread.");
 		}
 	}
 
@@ -62,14 +70,19 @@ public class SimpleMutilThreadEngine extends AbstractEngine {
 
 		@Override
 		public void run() {
-			ISpider spider = getSpider();
-			IDownloader defaultDownloader = spider.getDefaultDownloader();
-			IParser defaultParser = spider.getDefaultParser();
-			IPipeline defaultPipeline = spider.getDefaultPipeline();
-			spider.getLogger().debug("Engine start one thread.");
+			ICrawler crwaler = getCrawler();
+			IScheduler scheduler = crwaler.getScheduler();
+			IDownloader defaultDownloader = crwaler.getDefaultDownloader();
+			IParser defaultParser = crwaler.getDefaultParser();
+			IPipeline defaultPipeline = crwaler.getDefaultPipeline();
+			ISchedulerMiddleware schedulerMiddleware = crwaler.getSchedulerMiddleware();
+			IDownloaderMiddleware downloaderMiddleware = crwaler.getDownloaderMiddleware();
+			IParserMiddleware parserMiddleware = crwaler.getParserMiddleware();
+			IPipelineMiddleware pipelineMiddleware = crwaler.getPipelineMiddleware();
+			getLogger().debug("Engine start one thread.");
 			while (true) {
 				try {
-					IRequest request = spider.getRequest();
+					IRequest request = schedulerMiddleware.getRequest(scheduler);
 					if (request != null) {
 						// get downloader
 						IDownloader downloader = null;
@@ -77,33 +90,34 @@ public class SimpleMutilThreadEngine extends AbstractEngine {
 							downloader = request.getDownloader();
 						else
 							downloader = defaultDownloader;
-						if (downloader == null)
-							throw new NullPointerException("downloader is null");
 						// get parser
 						IParser parser = null;
 						if (request.hasParser())
 							parser = request.getParser();
 						else
 							parser = defaultParser;
-						if (parser == null)
-							throw new NullPointerException("parser is null");
 						// get pipeline
 						IPipeline pipeline = null;
 						if (request.hasPipeline())
 							pipeline = request.getPipeline();
 						else
 							pipeline = defaultPipeline;
-						if (pipeline == null)
-							throw new NullPointerException("pipeline is null");
-						//
-						IResponse response = downloader
-								.downloadRequest(request);
-						List<IItem> itemList = parser.parseResponse(request,
-								response);
-						pipeline.processItem(itemList);
+						//process
+						IResponse response = downloaderMiddleware.download(downloader, request);
+						List<IItem> itemList = parserMiddleware.parse(parser, request, response);
+						for (IItem item : itemList) {
+							if (item instanceof NewRequestItem)
+								schedulerMiddleware.addRequest(scheduler, ((NewRequestItem)item).getRequest());
+							else
+								pipelineMiddleware.pipe(pipeline, item);
+						}
 					}
+				} catch (IgnoreRequestException e) {
+					continue;
+				} catch (IgnoreResponseException e) {
+					continue;
 				} catch (Exception e) {
-					spider.getLogger().error(null, e);
+					getLogger().error(null, e);
 				}
 			}
 		}

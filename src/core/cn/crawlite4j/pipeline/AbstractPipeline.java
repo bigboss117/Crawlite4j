@@ -1,25 +1,23 @@
 package cn.crawlite4j.pipeline;
 
-import java.util.List;
-
 import cn.crawlite4j.item.IItem;
-import cn.crawlite4j.spider.ISpider;
+import cn.crawlite4j.log.ILogger;
 
 public abstract class AbstractPipeline implements IPipeline {
 
-	private ISpider spider;
+	private ILogger logger;
 
 	@Override
-	public final void setSpider(ISpider spider) {
-		this.spider = spider;
+	public final void setLogger(ILogger logger) {
+		this.logger = logger;
 	}
 
 	@Override
-	public final ISpider getSpider() {
-		return spider;
+	public final ILogger getLogger() {
+		return logger;
 	}
 
 	@Override
-	public abstract void processItem(List<IItem> itemList);
+	public abstract void processItem(IItem item);
 
 }

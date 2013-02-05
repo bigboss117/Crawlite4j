@@ -1,21 +1,21 @@
 package cn.crawlite4j.downloader;
 
+import cn.crawlite4j.log.ILogger;
 import cn.crawlite4j.request.IRequest;
 import cn.crawlite4j.response.IResponse;
-import cn.crawlite4j.spider.ISpider;
 
 public abstract class AbstractDownloader implements IDownloader {
 
-	private ISpider spider;
+	private ILogger logger;
 
 	@Override
-	public final void setSpider(ISpider spider) {
-		this.spider = spider;
+	public final void setLogger(ILogger logger) {
+		this.logger = logger;
 	}
 
 	@Override
-	public final ISpider getSpider() {
-		return spider;
+	public final ILogger getLogger() {
+		return logger;
 	}
 
 	@Override

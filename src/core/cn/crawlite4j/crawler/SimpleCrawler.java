@@ -1,9 +1,9 @@
-package cn.crawlite4j.spider;
+package cn.crawlite4j.crawler;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.crawlite4j.downloader.SimpleDownloader;
+import cn.crawlite4j.downloader.URLDownloader;
 import cn.crawlite4j.engine.SimpleMutilThreadEngine;
 import cn.crawlite4j.log.Level;
 import cn.crawlite4j.log.SimpleConsoleLogger;
@@ -12,18 +12,18 @@ import cn.crawlite4j.pipeline.SimplePipeline;
 import cn.crawlite4j.request.SimpleRequest;
 import cn.crawlite4j.scheduler.FIFOScheduler;
 
-public class SimpleSpider extends AbstractSpider {
+public class SimpleCrawler extends AbstractCrawler {
 
 	protected List<Object> seeds = new LinkedList<Object>();
 
-	protected SimpleSpider() {
+	protected SimpleCrawler() {
 		super();
 	}
 
 	@Override
 	public void addSeed(Object seed) {
 		seeds.add(seed);
-		logger.info("Add seed : " + seed.toString());
+		getLogger().info("Add seed : " + seed.toString());
 	}
 
 	@Override
@@ -34,11 +34,11 @@ public class SimpleSpider extends AbstractSpider {
 	}
 
 	public static void main(String[] args) {
-		ISpider spider = new SimpleSpider();
+		ICrawler spider = new SimpleCrawler();
 		spider.setLogger(new SimpleConsoleLogger());
 		spider.setLogLevel(Level.DEBUG);
 		spider.setScheduler(new FIFOScheduler());
-		spider.setDefaultDownloader(new SimpleDownloader());
+		spider.setDefaultDownloader(new URLDownloader());
 		spider.setDefaultParser(new SimpleParser());
 		spider.setDefaultPipeline(new SimplePipeline());
 		spider.setEngine(new SimpleMutilThreadEngine(1));

@@ -1,13 +1,13 @@
 package cn.crawlite4j.scheduler;
 
+import cn.crawlite4j.log.ILogger;
 import cn.crawlite4j.request.IRequest;
-import cn.crawlite4j.spider.ISpider;
 
 public interface IScheduler {
 
-	public void setSpider(ISpider spider);
+	public void setLogger(ILogger logger);
 
-	public ISpider getSpider();
+	public ILogger getLogger();
 
 	public void addRequest(IRequest request);
 

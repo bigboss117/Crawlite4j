@@ -1,14 +1,14 @@
 package cn.crawlite4j.downloader;
 
+import cn.crawlite4j.log.ILogger;
 import cn.crawlite4j.request.IRequest;
 import cn.crawlite4j.response.IResponse;
-import cn.crawlite4j.spider.ISpider;
 
 public interface IDownloader {
 
-	public void setSpider(ISpider spider);
+	public void setLogger(ILogger logger);
 
-	public ISpider getSpider();
+	public ILogger getLogger();
 
 	public IResponse downloadRequest(IRequest request);
 

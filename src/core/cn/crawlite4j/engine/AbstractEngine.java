@@ -1,10 +1,13 @@
 package cn.crawlite4j.engine;
 
-import cn.crawlite4j.spider.ISpider;
+import cn.crawlite4j.crawler.ICrawler;
+import cn.crawlite4j.log.ILogger;
+import cn.crawlite4j.request.IRequest;
 
 public abstract class AbstractEngine implements IEngine {
 
-	private ISpider spider;
+	private ICrawler crawler;
+	private ILogger logger;
 
 	// ***********************************************************************//
 	// Constructor
@@ -29,13 +32,32 @@ public abstract class AbstractEngine implements IEngine {
 	// ***********************************************************************//
 
 	@Override
-	public final void setSpider(ISpider spider) {
-		this.spider = spider;
+	public final void setCrawler(ICrawler crawler) {
+		this.crawler = crawler;
 	}
 
 	@Override
-	public final ISpider getSpider() {
-		return spider;
+	public final ICrawler getCrawler() {
+		return crawler;
+	}
+	
+	@Override
+	public final void setLogger(ILogger logger) {
+		this.logger = logger;
+	}
+	
+	@Override
+	public final ILogger getLogger() {
+		return logger;
+	}
+	
+	@Override
+	public void addRequest(IRequest request) {
+		try {
+			crawler.getSchedulerMiddleware().addRequest(crawler.getScheduler(), request);
+		} catch (Exception e) {
+			logger.error(null, e);
+		}
 	}
 
 }

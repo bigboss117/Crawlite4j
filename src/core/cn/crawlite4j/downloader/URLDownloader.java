@@ -10,34 +10,57 @@ import cn.crawlite4j.request.IRequest;
 import cn.crawlite4j.response.IResponse;
 import cn.crawlite4j.response.SimpleResponse;
 
-public class SimpleDownloader extends AbstractDownloader {
+public class URLDownloader extends AbstractDownloader {
+
+	private String defaultCharset = "utf-8";
+
+	public void setDefaultCharset(String charset) {
+		defaultCharset = charset;
+	}
+
+	public String getDefaultCharset() {
+		return defaultCharset;
+	}
 
 	@Override
 	public IResponse downloadRequest(IRequest request) {
-		if (!(request instanceof IRequest))
-			throw new IllegalArgumentException("request is not a IRequest");
 		String urlString = request.getUrlString();
 		SimpleResponse response = new SimpleResponse(urlString);
 		try {
 			URL url = new URL(urlString);
 			URLConnection connection = url.openConnection();
+			// get charset
+			String charset = defaultCharset;
+			try {
+				String contentType = connection.getHeaderField("Content-Type");
+				String[] contents = contentType.split(";");
+				for (int i = 0; i < contents.length; i++) {
+					String content = contents[i].trim();
+					if (content.startsWith("charset=")) {
+						charset = content.replaceFirst("charset=", "");
+						break;
+					}
+				}
+			} catch (Exception e) {
+				charset = defaultCharset;
+			}
+			// set timeout
 			connection.setConnectTimeout(request.getDownloadTimeout());
-			connection.setReadTimeout(request.getDownloadTimeout());
+			// get content
 			InputStream in = connection.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					in, connection.getContentEncoding()));
+					in, charset));
 			StringBuffer sb = new StringBuffer();
 			String s = null;
 			while ((s = reader.readLine()) != null) {
-				sb.append(s);
+				sb.append(s).append("\n");
 			}
 			reader.close();
 			response.setContent(sb.toString());
-			response.setSuccessful(true);
-			getSpider().getLogger().debug("Open url " + request.getUrlString());
+			response.setFailed(false);
+			getLogger().debug("Open url " + request.getUrlString());
 		} catch (Exception e) {
-			getSpider().getLogger().warn(
-					"Fail to open url" + request.getUrlString(), e);
+			getLogger().warn("Fail to open url " + request.getUrlString(), e);
 		}
 		return response;
 	}

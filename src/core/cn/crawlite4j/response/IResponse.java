@@ -4,10 +4,10 @@ public interface IResponse {
 
 	public String getUrlString();
 
-	public boolean isSuccessful();
+	public boolean isFailed();
 
-	public void setSuccessful(boolean successful);
+	public void setFailed(boolean failed);
 
-	public boolean getSuccessful();
+	public boolean getFailed();
 
 }
