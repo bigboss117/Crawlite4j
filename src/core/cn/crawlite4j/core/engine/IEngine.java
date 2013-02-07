@@ -11,13 +11,13 @@ public interface IEngine {
 	public ICrawler getCrawler();
 
 	public void setLogger(ILogger logger);
-	
-	public ILogger getLogger();
-	
-	public void addRequest(IRequest request);
-	
-	public void start();
 
-	public void stop();
+	public ILogger getLogger();
+
+	public void addRequest(IRequest request);
+
+	public void startEngine();
+
+	public void stopEngine();
 
 }

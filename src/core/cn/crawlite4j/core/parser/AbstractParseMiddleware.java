@@ -9,26 +9,31 @@ import cn.crawlite4j.core.response.IResponse;
 public abstract class AbstractParseMiddleware implements IParserMiddleware {
 
 	@Override
-	public final List<IItem> parse(IParser parser, IRequest request, IResponse response) {
+	public final List<IItem> parse(IParser parser, IRequest request,
+			IResponse response) {
 		try {
 			response = processResponse(request, response);
 			List<IItem> itemList;
-			if (response.isFailed())
+			if (response.isFailed()) {
 				itemList = processFailed(request, response);
-			else
+			} else {
 				matchParser(parser, request, response);
 				itemList = parser.parseResponse(request, response);
+			}
 			return processItem(itemList);
 		} catch (RuntimeException e) {
 			return processException(e);
 		}
 	}
 
-	protected abstract IResponse processResponse(IRequest request, IResponse response);
-	
-	protected abstract List<IItem> processFailed(IRequest request, IResponse response);
-	
-	protected abstract void matchParser(IParser parser, IRequest request, IResponse response);
+	protected abstract IResponse processResponse(IRequest request,
+			IResponse response);
+
+	protected abstract List<IItem> processFailed(IRequest request,
+			IResponse response);
+
+	protected abstract void matchParser(IParser parser, IRequest request,
+			IResponse response);
 
 	protected abstract List<IItem> processItem(List<IItem> itemList);
 

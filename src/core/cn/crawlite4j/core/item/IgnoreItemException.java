@@ -15,5 +15,5 @@ public class IgnoreItemException extends RuntimeException {
 	public IgnoreItemException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
-	
+
 }

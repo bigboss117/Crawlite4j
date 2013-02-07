@@ -82,9 +82,7 @@ public abstract class AbstractRequest implements IRequest {
 
 	@Override
 	public boolean hasDownloader() {
-		if (downloader == null)
-			return false;
-		return true;
+		return downloader != null;
 	}
 
 	@Override
@@ -94,9 +92,7 @@ public abstract class AbstractRequest implements IRequest {
 
 	@Override
 	public boolean hasParser() {
-		if (parser == null)
-			return false;
-		return true;
+		return parser != null;
 	}
 
 	@Override
@@ -106,9 +102,7 @@ public abstract class AbstractRequest implements IRequest {
 
 	@Override
 	public boolean hasPipeline() {
-		if (pipeline == null)
-			return false;
-		return true;
+		return pipeline != null;
 	}
 
 	@Override

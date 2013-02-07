@@ -15,5 +15,5 @@ public class ScheduleException extends RuntimeException {
 	public ScheduleException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
-	
+
 }

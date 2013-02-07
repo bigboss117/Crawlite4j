@@ -1,5 +1,6 @@
 package cn.crawlite4j.core.crawler;
 
+import cn.crawlite4j.core.downloader.DownloaderMiddleware;
 import cn.crawlite4j.core.downloader.IDownloader;
 import cn.crawlite4j.core.downloader.IDownloaderMiddleware;
 import cn.crawlite4j.core.engine.IEngine;
@@ -7,11 +8,15 @@ import cn.crawlite4j.core.log.ILogger;
 import cn.crawlite4j.core.log.Level;
 import cn.crawlite4j.core.parser.IParser;
 import cn.crawlite4j.core.parser.IParserMiddleware;
+import cn.crawlite4j.core.parser.ParserMiddleware;
 import cn.crawlite4j.core.pipeline.IPipeline;
 import cn.crawlite4j.core.pipeline.IPipelineMiddleware;
+import cn.crawlite4j.core.pipeline.PipelineMiddleware;
 import cn.crawlite4j.core.request.IRequest;
+import cn.crawlite4j.core.request.IgnoreRequestException;
 import cn.crawlite4j.core.scheduler.IScheduler;
 import cn.crawlite4j.core.scheduler.ISchedulerMiddleware;
+import cn.crawlite4j.core.scheduler.SchedulerMiddleware;
 
 public abstract class AbstractCrawler implements ICrawler {
 
@@ -70,50 +75,6 @@ public abstract class AbstractCrawler implements ICrawler {
 	}
 
 	@Override
-	public IScheduler getScheduler() {
-		return scheduler;
-	}
-
-	@Override
-	public void setScheduler(IScheduler scheduler) {
-		scheduler.setLogger(logger);
-		this.scheduler = scheduler;
-	}
-
-	@Override
-	public IDownloader getDefaultDownloader() {
-		return defaultDownloader;
-	}
-
-	@Override
-	public void setDefaultDownloader(IDownloader downloader) {
-		downloader.setLogger(logger);
-		defaultDownloader = downloader;
-	}
-
-	@Override
-	public IParser getDefaultParser() {
-		return defaultParser;
-	}
-
-	@Override
-	public void setDefaultParser(IParser parser) {
-		parser.setLogger(logger);
-		defaultParser = parser;
-	}
-
-	@Override
-	public IPipeline getDefaultPipeline() {
-		return defaultPipeline;
-	}
-
-	@Override
-	public void setDefaultPipeline(IPipeline pipeline) {
-		pipeline.setLogger(logger);
-		defaultPipeline = pipeline;
-	}
-
-	@Override
 	public ISchedulerMiddleware getSchedulerMiddleware() {
 		return schedulerMiddleware;
 	}
@@ -154,40 +115,118 @@ public abstract class AbstractCrawler implements ICrawler {
 	}
 
 	@Override
+	public IScheduler getScheduler() {
+		return scheduler;
+	}
+
+	@Override
+	public void setScheduler(IScheduler scheduler) {
+		this.scheduler = scheduler;
+	}
+
+	@Override
+	public IDownloader getDefaultDownloader() {
+		return defaultDownloader;
+	}
+
+	@Override
+	public void setDefaultDownloader(IDownloader downloader) {
+		defaultDownloader = downloader;
+	}
+
+	@Override
+	public IParser getDefaultParser() {
+		return defaultParser;
+	}
+
+	@Override
+	public void setDefaultParser(IParser parser) {
+		defaultParser = parser;
+	}
+
+	@Override
+	public IPipeline getDefaultPipeline() {
+		return defaultPipeline;
+	}
+
+	@Override
+	public void setDefaultPipeline(IPipeline pipeline) {
+		defaultPipeline = pipeline;
+	}
+
+	@Override
 	public void setEngine(IEngine engine) {
-		engine.setCrawler(this);
-		engine.setLogger(logger);
 		this.engine = engine;
 	}
 
 	@Override
-	public final void runSpider() {
+	public final void runCrawler() {
 		if (logger == null)
 			throw new NullPointerException("logger is null");
-		if (scheduler == null)
-			throw new NullPointerException("defaultScheduler is null");
-		if (defaultDownloader == null)
-			throw new NullPointerException("defaultDownloader is null");
-		if (defaultParser == null)
-			throw new NullPointerException("defaultParser is null");
-		if (defaultPipeline == null)
-			throw new NullPointerException("defaultPipeline is null");
-		if (engine == null)
-			throw new NullPointerException("engine is null");
 		try {
+			if (schedulerMiddleware == null) {
+				schedulerMiddleware = new SchedulerMiddleware();
+				logger.warn("Crawler member schedulerMiddleware is null, use default SchedulerMiddleware instead.");
+			}
+			if (downloaderMiddleware == null) {
+				downloaderMiddleware = new DownloaderMiddleware();
+				logger.warn("Crawler member downloaderMiddleware is null, use default DownloaderMiddleware instead.");
+			}
+			if (parserMiddleware == null) {
+				parserMiddleware = new ParserMiddleware();
+				logger.warn("Crawler member parserMiddleware is null, use default ParserMiddleware instead.");
+			}
+			if (pipelineMiddleware == null) {
+				pipelineMiddleware = new PipelineMiddleware();
+				logger.warn("Crawler member pipelineMiddleware is null, use default PipelineMiddleware instead.");
+			}
+			if (scheduler == null)
+				throw new NullPointerException("scheduler is null");
+			else
+				scheduler.setLogger(logger);
+			if (defaultDownloader == null)
+				logger.warn("Crawler member defaultDownloader is null.");
+			else
+				defaultDownloader.setLogger(logger);
+			if (defaultParser == null)
+				logger.warn("Crawler member defaultParser is null.");
+			else
+				defaultParser.setLogger(logger);
+			if (defaultPipeline == null)
+				logger.warn("Crawler member defaultPipeline is null.");
+			else
+				defaultPipeline.setLogger(logger);
+			if (engine == null)
+				throw new NullPointerException("engine is null");
+			else
+				engine.setLogger(logger);
+			engine.setCrawler(this);
 			startRequests();
+			logger.info("Start crawler.");
+			engine.startEngine();
 		} catch (Exception e) {
 			logger.error(null, e);
 		}
-		engine.start();
+	}
+
+	@Override
+	public final void stopCrawler() {
+		engine.stopEngine();
+		logger.info("Stop crawler.");
 	}
 
 	// ***********************************************************************//
 	// protected functions
 	// ***********************************************************************//
-	
+
 	protected void addRequest(IRequest request) {
-		engine.addRequest(request);
+		try {
+			schedulerMiddleware.addRequest(scheduler, request);
+		} catch (IgnoreRequestException e) {
+			// pass
+		} catch (Exception e) {
+			logger.error(null, e);
+		}
 	}
 
 }

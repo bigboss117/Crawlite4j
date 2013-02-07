@@ -1,6 +1,6 @@
 package cn.crawlite4j.core.parser;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.crawlite4j.core.item.IItem;
@@ -15,15 +15,16 @@ public class ParserMiddleware extends AbstractParseMiddleware {
 			throw new NullPointerException("response is null");
 		return response;
 	}
-	
+
 	@Override
 	protected List<IItem> processFailed(IRequest request, IResponse response) {
-		return new LinkedList<IItem>();
+		return new ArrayList<IItem>(0);
 	}
-	
+
 	@Override
-	protected void matchParser(IParser parser, IRequest request, IResponse response) {
-		if (!(response instanceof IRequest))
+	protected void matchParser(IParser parser, IRequest request,
+			IResponse response) {
+		if (!(response instanceof IResponse))
 			throw new IllegalArgumentException("response is not a IRequest");
 	}
 

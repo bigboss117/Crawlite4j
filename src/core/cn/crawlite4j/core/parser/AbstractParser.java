@@ -22,6 +22,7 @@ public abstract class AbstractParser implements IParser {
 	}
 
 	@Override
-	public abstract List<IItem> parseResponse(IRequest request, IResponse response);
+	public abstract List<IItem> parseResponse(IRequest request,
+			IResponse response);
 
 }

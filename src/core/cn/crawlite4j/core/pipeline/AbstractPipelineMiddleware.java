@@ -13,9 +13,9 @@ public abstract class AbstractPipelineMiddleware implements IPipelineMiddleware 
 			processException(e);
 		}
 	}
-	
+
 	protected abstract IItem processItem(IItem item);
-	
+
 	protected abstract void processException(RuntimeException e);
 
 }

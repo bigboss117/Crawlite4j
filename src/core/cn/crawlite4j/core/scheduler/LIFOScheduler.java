@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import cn.crawlite4j.core.request.IRequest;
 
-public class LIFOSeheduler extends AbstractScheduler {
+public class LIFOScheduler extends AbstractScheduler {
 
 	protected LinkedList<IRequest> list = new LinkedList<IRequest>();
 

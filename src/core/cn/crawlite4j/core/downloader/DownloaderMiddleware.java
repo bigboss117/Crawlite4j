@@ -11,7 +11,7 @@ public class DownloaderMiddleware extends AbstractDownloaderMiddleware {
 			throw new NullPointerException("request is null");
 		return request;
 	}
-	
+
 	@Override
 	protected void matchDownloader(IDownloader downloader, IRequest request) {
 		if (!(request instanceof IRequest))

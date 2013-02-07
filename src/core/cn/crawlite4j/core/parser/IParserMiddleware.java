@@ -8,6 +8,7 @@ import cn.crawlite4j.core.response.IResponse;
 
 public interface IParserMiddleware {
 
-	public List<IItem> parse(IParser parser, IRequest request, IResponse response);
+	public List<IItem> parse(IParser parser, IRequest request,
+			IResponse response);
 
 }

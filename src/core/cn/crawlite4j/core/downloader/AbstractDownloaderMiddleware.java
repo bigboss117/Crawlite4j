@@ -3,7 +3,8 @@ package cn.crawlite4j.core.downloader;
 import cn.crawlite4j.core.request.IRequest;
 import cn.crawlite4j.core.response.IResponse;
 
-public abstract class AbstractDownloaderMiddleware implements IDownloaderMiddleware {
+public abstract class AbstractDownloaderMiddleware implements
+		IDownloaderMiddleware {
 
 	@Override
 	public final IResponse download(IDownloader downloader, IRequest request) {
@@ -17,8 +18,9 @@ public abstract class AbstractDownloaderMiddleware implements IDownloaderMiddlew
 	}
 
 	protected abstract IRequest processRequest(IRequest request);
-	
-	protected abstract void matchDownloader(IDownloader downloader, IRequest request);
+
+	protected abstract void matchDownloader(IDownloader downloader,
+			IRequest request);
 
 	protected abstract IResponse processResponse(IResponse response);
 

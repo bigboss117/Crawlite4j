@@ -22,22 +22,6 @@ public interface ICrawler {
 
 	public void setLogLevel(Level level);
 
-	public IScheduler getScheduler();
-
-	public void setScheduler(IScheduler scheduler);
-
-	public IDownloader getDefaultDownloader();
-
-	public void setDefaultDownloader(IDownloader downloader);
-
-	public IParser getDefaultParser();
-
-	public void setDefaultParser(IParser parser);
-
-	public IPipeline getDefaultPipeline();
-
-	public void setDefaultPipeline(IPipeline pipeline);
-
 	public void setSchedulerMiddleware(ISchedulerMiddleware middleware);
 
 	public ISchedulerMiddleware getSchedulerMiddleware();
@@ -54,9 +38,27 @@ public interface ICrawler {
 
 	public IPipelineMiddleware getPipelineMiddleware();
 
+	public IScheduler getScheduler();
+
+	public void setScheduler(IScheduler scheduler);
+
+	public IDownloader getDefaultDownloader();
+
+	public void setDefaultDownloader(IDownloader downloader);
+
+	public IParser getDefaultParser();
+
+	public void setDefaultParser(IParser parser);
+
+	public IPipeline getDefaultPipeline();
+
+	public void setDefaultPipeline(IPipeline pipeline);
+
 	public void setEngine(IEngine engine);
 
-	public void runSpider();
+	public void runCrawler();
+
+	public void stopCrawler();
 
 	public void addSeed(Object seed);
 

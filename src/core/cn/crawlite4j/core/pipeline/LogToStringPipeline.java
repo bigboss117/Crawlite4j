@@ -2,11 +2,11 @@ package cn.crawlite4j.core.pipeline;
 
 import cn.crawlite4j.core.item.IItem;
 
-public class LoggerPipeline extends AbstractPipeline {
+public class LogToStringPipeline extends AbstractPipeline {
 
 	@Override
 	public void processItem(IItem item) {
-		getLogger().debug(item.toString());
+		getLogger().debug("Item toString : " + item.toString());
 	}
 
 }
