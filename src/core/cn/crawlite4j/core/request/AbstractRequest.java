@@ -55,7 +55,7 @@ public abstract class AbstractRequest implements IRequest {
 	}
 
 	@Override
-	public TimeUnit getDownloadTimeoutTimeUnit() {
+	public TimeUnit getDownloadTimeUnit() {
 		return downloadTimeoutTimeUnit;
 	}
 

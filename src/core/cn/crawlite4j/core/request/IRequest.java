@@ -16,7 +16,7 @@ public interface IRequest {
 
 	public void setDownloadTimeout(int timeout);
 
-	public TimeUnit getDownloadTimeoutTimeUnit();
+	public TimeUnit getDownloadTimeUnit();
 
 	public boolean hasProperty(Object key);
 
